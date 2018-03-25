@@ -1,0 +1,27 @@
+{
+  "name": "dl-data",
+  "version": "1.0.0",
+  "description": "Download files in a structured way",
+  "main": "src/download.js",
+  "keywords": [
+    "download"
+  ],
+  "author": "Alexey Komarov <alex7kom@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "download": "^6.2.5",
+    "obj-flatten": "^2.0.3"
+  },
+  "devDependencies": {
+    "@alex7kom/sayonara-config": "0.2.2",
+    "husky": "^0.14.3"
+  },
+  "eslintConfig": {
+    "extends": "./node_modules/@alex7kom/sayonara-config/src/configs/eslint-node.js"
+  },
+  "scripts": {
+    "lint": "sayonara-config lint-node",
+    "pretty": "sayonara-config pretty",
+    "precommit": "sayonara-config pretty --staged"
+  }
+}

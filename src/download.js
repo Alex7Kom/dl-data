@@ -1,20 +1,30 @@
 'use strict';
 
 const path = require('path');
+const fs = require('fs');
+const util = require('util');
 
-const download = require('download');
+const got = require('got');
+const mkdirp = require('mkdirp');
 const flatten = require('obj-flatten');
 
-function downloadData(baseDir, files) {
+const writeFile = util.promisify(fs.writeFile);
+const mkdir = util.promisify(mkdirp);
+
+function downloadData(baseDir, files, options) {
+  const client = got.extend(options);
   const fileList = flatten(files, '/');
 
   return Promise.all(
-    Object.keys(fileList).map(filePath => {
+    Object.keys(fileList).map(async filePath => {
       const url = fileList[filePath];
-      const dest = path.join(baseDir, path.dirname(filePath));
-      const filename = path.basename(filePath);
+      const dest = path.join(baseDir, filePath);
 
-      return download(url, dest, { filename });
+      await mkdir(path.dirname(dest));
+
+      const response = await client(url, options);
+
+      await writeFile(dest, response.body);
     })
   );
 }
